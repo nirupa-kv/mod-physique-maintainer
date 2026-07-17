@@ -1,0 +1,25 @@
+name: Keep Streamlit Awake
+
+on:
+  schedule:
+    - cron: '0 */2 * * *' # Runs every 2 hours
+  workflow_dispatch:      # Allows manual trigger
+
+jobs:
+  keep_awake:
+    runs-on: ubuntu-latest
+    
+    # This block forces GitHub to give the runner code-writing access
+    permissions:
+      contents: write
+      
+    steps:
+    - name: Checkout Repo
+      uses: actions/checkout@v4
+    
+    - name: Push Empty Commit
+      run: |
+        git config --global user.name "GitHub Action"
+        git config --global user.email "action@github.com"
+        git commit --allow-empty -m "Keep Streamlit app awake"
+        git push
